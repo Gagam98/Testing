@@ -1,22 +1,29 @@
 package mp.p02.home1;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int WRITE_POST_REQUEST_CODE = 1;
+    private static final int PERMISSION_REQUEST_CODE = 100; // 권한 요청 코드
     private static final int BANNER_IMAGE_CHANGE_INTERVAL = 4000; // 4초
     private ImageView bannerImageView;
     private Handler handler = new Handler();
@@ -29,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 권한 요청
+        requestPermissions();
 
         // Set click listener for the banner image
         bannerImageView = findViewById(R.id.bannerImageView);
@@ -131,6 +141,38 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Log.d("MainActivity", "onActivityResult: 데이터가 전달되지 않음.");
+        }
+    }
+
+    // 권한 요청 메서드
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13 이상
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            // Android 12 이하
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+    // 권한 요청 결과 처리
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -44,7 +44,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         // 이미지 설정
         if (item.getImageUri() != null) {
-            holder.itemImage.setImageURI(item.getImageUri());
+            try {
+                holder.itemImage.setImageURI(item.getImageUri());
+            } catch (SecurityException e) {
+                e.printStackTrace();
+                // 기본 이미지 설정
+                holder.itemImage.setImageResource(R.drawable.button1);
+            }
         } else {
             // 기본 이미지 설정
             holder.itemImage.setImageResource(R.drawable.button1);
