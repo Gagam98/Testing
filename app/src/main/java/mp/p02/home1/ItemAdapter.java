@@ -44,10 +44,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         // 이미지 설정
         if (item.getImageUri() != null) {
-            holder.itemImage.setImageURI(item.getImageUri());
+            try {
+                Uri imageUri = item.getImageUri();
+                holder.itemImage.setImageURI(imageUri);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+                holder.itemImage.setImageResource(R.drawable.button1); // 기본 이미지 설정
+            }
         } else {
-            // 기본 이미지 설정
-            holder.itemImage.setImageResource(R.drawable.button1);
+            holder.itemImage.setImageResource(R.drawable.button1); // 기본 이미지
         }
 
         // 하트 버튼 초기 상태 설정
@@ -56,21 +61,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         // 하트 버튼 클릭 이벤트
         holder.heartButton.setOnClickListener(v -> {
             boolean isFavorite = item.isFavorite();
-            item.setFavorite(!isFavorite);
-
-            // 데이터베이스 업데이트
-            new Thread(() -> dbHelper.updateHeartState(item.getId(), !isFavorite)).start();
-
-            // UI 업데이트
-            holder.heartButton.setImageResource(item.isFavorite() ? R.drawable.heart_fill : R.drawable.heart_empty);
+            new Thread(() -> {
+                boolean success = dbHelper.updateHeartState(item.getId(), !isFavorite);
+                if (success) {
+                    item.setFavorite(!isFavorite);
+                    holder.heartButton.post(() -> {
+                        holder.heartButton.setImageResource(item.isFavorite() ? R.drawable.heart_fill : R.drawable.heart_empty);
+                    });
+                }
+            }).start();
         });
 
         // 아이템 클릭 이벤트 -> 상세 페이지로 이동
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemDetailActivity.class);
             intent.putExtra("item_id", item.getId());
-            intent.putExtra("item_title", item.getTitle());
-            intent.putExtra("item_content", item.getContent());
+            intent.putExtra("item_title", item.getTitle() != null ? item.getTitle() : "No Title");
+            intent.putExtra("item_content", item.getContent() != null ? item.getContent() : "No Content");
             if (item.getImageUri() != null) {
                 intent.putExtra("item_image_uri", item.getImageUri().toString());
             }

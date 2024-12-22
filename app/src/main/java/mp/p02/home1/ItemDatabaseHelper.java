@@ -41,79 +41,107 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COLUMN_HEART_STATE + " INTEGER DEFAULT 0");
-        } else {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            onCreate(db);
         }
+        // Add future migration logic here if necessary
     }
 
     public void addItem(Item item) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, item.getTitle());
-        values.put(COLUMN_CONTENT, item.getContent());
-        values.put(COLUMN_IMAGE_URI, item.getImageUri() != null ? item.getImageUri().toString() : null);
-        values.put(COLUMN_HEART_STATE, item.isFavorite() ? 1 : 0);
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_TITLE, item.getTitle());
+            values.put(COLUMN_CONTENT, item.getContent());
+            values.put(COLUMN_IMAGE_URI, item.getImageUri() != null ? item.getImageUri().toString() : null);
+            values.put(COLUMN_HEART_STATE, item.isFavorite() ? 1 : 0);
 
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+            db.insert(TABLE_NAME, null, values);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
     }
 
     public List<Item> getAllItems() {
         List<Item> itemList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, COLUMN_ID + " DESC");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-                String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE));
-                String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT));
-                String imageUriString = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URI));
-                int heartState = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HEART_STATE));
-                Uri imageUri = imageUriString != null ? Uri.parse(imageUriString) : null;
+        try {
+            db = this.getReadableDatabase();
+            cursor = db.query(TABLE_NAME, null, null, null, null, null, COLUMN_ID + " DESC");
 
-                Item item = new Item(id, imageUri, title, content, heartState == 1);
-                itemList.add(item);
-            } while (cursor.moveToNext());
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT));
+                    String imageUriString = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URI));
+                    int heartState = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HEART_STATE));
+                    Uri imageUri = imageUriString != null ? Uri.parse(imageUriString) : null;
+
+                    Item item = new Item(id, imageUri, title, content, heartState == 1);
+                    itemList.add(item);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
         }
-        cursor.close();
-        db.close();
-
         return itemList;
     }
 
     public boolean doesItemExist(int itemId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID}, COLUMN_ID + " = ?",
-                new String[]{String.valueOf(itemId)}, null, null, null);
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        boolean exists = cursor != null && cursor.getCount() > 0;
-        if (cursor != null) cursor.close();
-        db.close();
-        return exists;
+        try {
+            db = this.getReadableDatabase();
+            cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID}, COLUMN_ID + " = ?",
+                    new String[]{String.valueOf(itemId)}, null, null, null);
+
+            return cursor != null && cursor.getCount() > 0;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
     }
 
     public boolean deleteItem(int itemId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(itemId)});
-        db.close();
-        return rowsAffected > 0;
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            int rowsAffected = db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(itemId)});
+            return rowsAffected > 0;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
     }
 
-    public void updateHeartState(int id, boolean isFavorite) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_HEART_STATE, isFavorite ? 1 : 0);
+    public boolean updateHeartState(int id, boolean isFavorite) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_HEART_STATE, isFavorite ? 1 : 0);
 
-        int rowsAffected = db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
-
-        // 디버깅 로그
-        if (rowsAffected > 0) {
-            System.out.println("Heart state updated for item ID: " + id);
-        } else {
-            System.out.println("Failed to update heart state for item ID: " + id);
+            int rowsAffected = db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+            return rowsAffected > 0;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
         }
     }
 }

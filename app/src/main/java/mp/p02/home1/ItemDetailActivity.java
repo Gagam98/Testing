@@ -1,6 +1,8 @@
 package mp.p02.home1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +11,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -75,7 +82,20 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         if (imageUriString != null) {
             Uri imageUri = Uri.parse(imageUriString);
-            itemImageView.setImageURI(imageUri);
+            try {
+                // ContentResolver를 사용하여 URI를 InputStream으로 변환
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                if (inputStream != null) {
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    itemImageView.setImageBitmap(bitmap);
+                    inputStream.close();
+                }
+            } catch (IOException | SecurityException e) {
+                e.printStackTrace();
+                // 기본 이미지 설정
+                Log.e("ItemDetailActivity", "Failed to load image URI: " + e.getMessage());
+                itemImageView.setImageResource(R.drawable.button1);
+            }
         } else {
             // 기본 이미지 설정
             itemImageView.setImageResource(R.drawable.button1);
