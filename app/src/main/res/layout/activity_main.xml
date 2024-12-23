@@ -89,7 +89,7 @@
             android:id="@+id/recent_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="최근상품"
+            android:text="삽니다"
             android:textColor="@android:color/black"
             android:background="@android:color/white"
             app:layout_constraintTop_toTopOf="parent"
