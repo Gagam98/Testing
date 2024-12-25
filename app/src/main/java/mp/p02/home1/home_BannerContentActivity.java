@@ -10,19 +10,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import mp.p02.home1.databinding.ActivityBannerContentBinding;
+import mp.p02.home1.databinding.HomeActivityBannerContentBinding;
 
 public class home_BannerContentActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private ActivityBannerContentBinding binding; // ViewBinding 클래스 선언
+    private HomeActivityBannerContentBinding binding; // ViewBinding 클래스 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // 바인딩 객체 초기화
-        binding = ActivityBannerContentBinding.inflate(getLayoutInflater());
+        binding = HomeActivityBannerContentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // UI 요소들 초기화
