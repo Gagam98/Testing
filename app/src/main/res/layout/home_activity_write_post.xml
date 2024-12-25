@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WritePostActivity">
+    tools:context=".home_WritePostActivity">
 
     <!-- Toolbar for navigation and title with a "완료" button on the right -->
     <androidx.appcompat.widget.Toolbar

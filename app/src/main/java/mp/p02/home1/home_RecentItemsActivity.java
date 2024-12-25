@@ -3,7 +3,6 @@ package mp.p02.home1;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -16,20 +15,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class RecentItemsActivity extends AppCompatActivity {
+public class home_RecentItemsActivity extends AppCompatActivity {
 
     private static final int WRITE_POST_REQUEST_CODE = 1;
     private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
-    private List<Item> itemList;
-    private ItemDatabaseHelper dbHelper;
+    private home_ItemAdapter itemAdapter;
+    private List<home_Item> itemList;
+    private home_ItemDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recent_items);
+        setContentView(R.layout.home_activity_recent_items);
 
-        dbHelper = new ItemDatabaseHelper(this);
+        dbHelper = new home_ItemDatabaseHelper(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -40,14 +39,14 @@ public class RecentItemsActivity extends AppCompatActivity {
         // FloatingActionButton으로 글 작성 화면으로 이동
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent(RecentItemsActivity.this, WritePostActivity.class);
+            Intent intent = new Intent(home_RecentItemsActivity.this, home_WritePostActivity.class);
             startActivityForResult(intent, WRITE_POST_REQUEST_CODE);
         });
 
         // 홈 버튼 클릭 이벤트
         Button homeButton = findViewById(R.id.home_button);
         homeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(RecentItemsActivity.this, MainActivity.class);
+            Intent intent = new Intent(home_RecentItemsActivity.this, home_MainActivity.class);
             startActivity(intent);
         });
 
@@ -58,12 +57,12 @@ public class RecentItemsActivity extends AppCompatActivity {
 
     private void loadItems() {
         itemList = dbHelper.getAllItems();
-        itemAdapter = new ItemAdapter(this, itemList);
+        itemAdapter = new home_ItemAdapter(this, itemList);
         recyclerView.setAdapter(itemAdapter);
     }
 
     private void refreshItemList() {
-        List<Item> updatedItems = dbHelper.getAllItems();
+        List<home_Item> updatedItems = dbHelper.getAllItems();
         itemAdapter.updateItems(updatedItems); // 어댑터 데이터 업데이트
     }
 
@@ -83,12 +82,12 @@ public class RecentItemsActivity extends AppCompatActivity {
             String imageUriString = data.getStringExtra("imageUri");
 
             if (title != null && content != null) {
-                Item newItem;
+                home_Item newItem;
                 if (imageUriString != null) {
                     Uri imageUri = Uri.parse(imageUriString);
-                    newItem = new Item(imageUri, title, content);
+                    newItem = new home_Item(imageUri, title, content);
                 } else {
-                    newItem = new Item(R.drawable.button1, title, content);
+                    newItem = new home_Item(R.drawable.button1, title, content);
                 }
 
                 dbHelper.addItem(newItem); // SQLite에 저장

@@ -10,7 +10,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDatabaseHelper extends SQLiteOpenHelper {
+public class home_ItemDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "items.db";
     private static final int DATABASE_VERSION = 2;
@@ -22,7 +22,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_IMAGE_URI = "image_uri";
     private static final String COLUMN_HEART_STATE = "is_filled";
 
-    public ItemDatabaseHelper(Context context) {
+    public home_ItemDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -45,7 +45,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         // Add future migration logic here if necessary
     }
 
-    public void addItem(Item item) {
+    public void addItem(home_Item item) {
         SQLiteDatabase db = null;
         try {
             db = this.getWritableDatabase();
@@ -63,8 +63,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Item> getAllItems() {
-        List<Item> itemList = new ArrayList<>();
+    public List<home_Item> getAllItems() {
+        List<home_Item> itemList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
 
@@ -81,7 +81,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                     int heartState = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HEART_STATE));
                     Uri imageUri = imageUriString != null ? Uri.parse(imageUriString) : null;
 
-                    Item item = new Item(id, imageUri, title, content, heartState == 1);
+                    home_Item item = new home_Item(id, imageUri, title, content, heartState == 1);
                     itemList.add(item);
                 } while (cursor.moveToNext());
             }

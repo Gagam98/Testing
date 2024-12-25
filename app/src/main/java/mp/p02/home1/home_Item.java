@@ -2,7 +2,7 @@ package mp.p02.home1;
 
 import android.net.Uri;
 
-public class Item {
+public class home_Item {
 
     private Uri imageUri;
     private String title;
@@ -12,7 +12,7 @@ public class Item {
     private int id; // 아이템의 ID 필드 추가
 
     // Constructor with Uri
-    public Item(int id, Uri imageUri, String title, String content, boolean isFavorite) {
+    public home_Item(int id, Uri imageUri, String title, String content, boolean isFavorite) {
         this.id = id;
         this.imageUri = imageUri;
         this.title = title;
@@ -21,7 +21,7 @@ public class Item {
     }
 
     // Constructor with resource ID
-    public Item(int id, int imageResource, String title, String content, boolean isFavorite) {
+    public home_Item(int id, int imageResource, String title, String content, boolean isFavorite) {
         this.id = id;
         this.imageResource = imageResource;
         this.title = title;
@@ -30,14 +30,14 @@ public class Item {
     }
 
     // Constructor with Uri (missing field initializations added)
-    public Item(Uri imageUri, String title, String content) {
+    public home_Item(Uri imageUri, String title, String content) {
         this.imageUri = imageUri;
         this.title = title;
         this.content = content;
     }
 
     // Constructor with resource ID (missing field initializations added)
-    public Item(int imageResource, String title, String content) {
+    public home_Item(int imageResource, String title, String content) {
         this.imageResource = imageResource;
         this.title = title;
         this.content = content;

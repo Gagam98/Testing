@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity {
+public class home_MainActivity extends AppCompatActivity {
 
     private static final int WRITE_POST_REQUEST_CODE = 1;
     private static final int PERMISSION_REQUEST_CODE = 100; // 권한 요청 코드
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.home_activity_main);
 
         // 권한 요청
         requestPermissions();
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Switch to BannerContentActivity
-                Intent intent = new Intent(MainActivity.this, BannerContentActivity.class);
+                Intent intent = new Intent(home_MainActivity.this, home_BannerContentActivity.class);
                 startActivity(intent);
             }
         });
@@ -61,16 +61,16 @@ public class MainActivity extends AppCompatActivity {
         ImageView image4 = findViewById(R.id.button4);
 
         // Image click listeners
-        image1.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Image 1 Clicked!", Toast.LENGTH_SHORT).show());
-        image2.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Image 2 Clicked!", Toast.LENGTH_SHORT).show());
-        image3.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Image 3 Clicked!", Toast.LENGTH_SHORT).show());
-        image4.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Image 4 Clicked!", Toast.LENGTH_SHORT).show());
+        image1.setOnClickListener(v -> Toast.makeText(home_MainActivity.this, "Image 1 Clicked!", Toast.LENGTH_SHORT).show());
+        image2.setOnClickListener(v -> Toast.makeText(home_MainActivity.this, "Image 2 Clicked!", Toast.LENGTH_SHORT).show());
+        image3.setOnClickListener(v -> Toast.makeText(home_MainActivity.this, "Image 3 Clicked!", Toast.LENGTH_SHORT).show());
+        image4.setOnClickListener(v -> Toast.makeText(home_MainActivity.this, "Image 4 Clicked!", Toast.LENGTH_SHORT).show());
 
         // FloatingActionButton click listener
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             // Switch to WritePostActivity
-            Intent intent = new Intent(MainActivity.this, WritePostActivity.class);
+            Intent intent = new Intent(home_MainActivity.this, home_WritePostActivity.class);
             startActivityForResult(intent, WRITE_POST_REQUEST_CODE);
         });
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Button recentButton = findViewById(R.id.recent_button);
         recentButton.setOnClickListener(v -> {
             // Switch to RecentItemsActivity
-            Intent intent = new Intent(MainActivity.this, RecentItemsActivity.class);
+            Intent intent = new Intent(home_MainActivity.this, home_RecentItemsActivity.class);
             startActivity(intent);
         });
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         Button viewAllButton = findViewById(R.id.view_all_button);
         viewAllButton.setOnClickListener(v -> {
             // Switch to RecentItemsActivity
-            Intent intent = new Intent(MainActivity.this, RecentItemsActivity.class);
+            Intent intent = new Intent(home_MainActivity.this, home_RecentItemsActivity.class);
             startActivity(intent);
         });
     }
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // 데이터를 RecentItemsActivity로 전달
-            Intent intent = new Intent(MainActivity.this, RecentItemsActivity.class);
+            Intent intent = new Intent(home_MainActivity.this, home_RecentItemsActivity.class);
             intent.putExtra("title", title);
             intent.putExtra("content", content);
             intent.putExtra("imageUri", imageUriString);

@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerViewHolder> {
+public class home_BannerAdapter extends RecyclerView.Adapter<home_BannerAdapter.BannerViewHolder> {
 
     private List<Integer> bannerImages;
 
-    public BannerAdapter(List<Integer> bannerImages) {
+    public home_BannerAdapter(List<Integer> bannerImages) {
         this.bannerImages = bannerImages;
     }
 
     @NonNull
     @Override
     public BannerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_item_banner, parent, false);
         return new BannerViewHolder(view);
     }
 

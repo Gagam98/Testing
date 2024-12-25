@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import mp.p02.home1.databinding.ActivityBannerContentBinding;
 
-public class BannerContentActivity extends AppCompatActivity {
+public class home_BannerContentActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActivityBannerContentBinding binding; // ViewBinding 클래스 선언
@@ -64,15 +64,15 @@ public class BannerContentActivity extends AppCompatActivity {
 
                 if (itemId == R.id.nav_edit) {
                     // "수정" 메뉴 클릭 시 처리
-                    Toast.makeText(BannerContentActivity.this, "수정 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(home_BannerContentActivity.this, "수정 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.nav_delete) {
                     // "삭제" 메뉴 클릭 시 처리
-                    Toast.makeText(BannerContentActivity.this, "삭제 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(home_BannerContentActivity.this, "삭제 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.nav_report) {
                     // "신고" 메뉴 클릭 시 처리
-                    Toast.makeText(BannerContentActivity.this, "신고 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(home_BannerContentActivity.this, "신고 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(BannerContentActivity.this, "알 수 없는 메뉴 아이템", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(home_BannerContentActivity.this, "알 수 없는 메뉴 아이템", Toast.LENGTH_SHORT).show();
                 }
 
                 // 네비게이션 드로어를 닫기
@@ -89,12 +89,12 @@ public class BannerContentActivity extends AppCompatActivity {
 
         // 구매 버튼 클릭 리스너
         binding.buyButton.setOnClickListener(v ->
-                Toast.makeText(BannerContentActivity.this, "Product Purchased!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(home_BannerContentActivity.this, "Product Purchased!", Toast.LENGTH_SHORT).show()
         );
 
         // 관심목록에 추가 버튼 클릭 리스너
         binding.addToWishlistButton.setOnClickListener(v ->
-                Toast.makeText(BannerContentActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(home_BannerContentActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT).show()
         );
 
         // 하단바 아이템 클릭 리스너 (현재 동작 없음)

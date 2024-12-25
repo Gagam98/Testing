@@ -7,18 +7,16 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.view.View;
 import android.widget.Toast;
-import android.util.Log;
 
 import java.io.IOException;
 
-public class WritePostActivity extends AppCompatActivity {
+public class home_WritePostActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private EditText editTextTitle;
@@ -26,14 +24,14 @@ public class WritePostActivity extends AppCompatActivity {
     private ImageView imageView;
     private Button buttonSelectImage;
     private Uri imageUri;
-    private ItemDatabaseHelper dbHelper;
+    private home_ItemDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_post);
+        setContentView(R.layout.home_activity_write_post);
 
-        dbHelper = new ItemDatabaseHelper(this); // SQLite 헬퍼 초기화
+        dbHelper = new home_ItemDatabaseHelper(this); // SQLite 헬퍼 초기화
 
         // UI 초기화
         editTextTitle = findViewById(R.id.editTextTitle);
@@ -81,7 +79,7 @@ public class WritePostActivity extends AppCompatActivity {
         String content = editTextContent.getText().toString();
 
         if (!title.isEmpty() && !content.isEmpty()) {
-            Item newItem = new Item(imageUri, title, content);
+            home_Item newItem = new home_Item(imageUri, title, content);
             dbHelper.addItem(newItem); // SQLite에 데이터 저장
 
             // 반환 데이터 설정

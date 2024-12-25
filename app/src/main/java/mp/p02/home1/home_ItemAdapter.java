@@ -15,28 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
+public class home_ItemAdapter extends RecyclerView.Adapter<home_ItemAdapter.ItemViewHolder> {
 
-    private List<Item> itemList;
+    private List<home_Item> itemList;
     private Context context;
-    private ItemDatabaseHelper dbHelper;
+    private home_ItemDatabaseHelper dbHelper;
 
-    public ItemAdapter(Context context, List<Item> itemList) {
+    public home_ItemAdapter(Context context, List<home_Item> itemList) {
         this.context = context;
         this.itemList = itemList;
-        this.dbHelper = new ItemDatabaseHelper(context);
+        this.dbHelper = new home_ItemDatabaseHelper(context);
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recent, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_item_recent, parent, false);
         return new ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, int position) {
-        final Item item = itemList.get(position);
+        final home_Item item = itemList.get(position);
 
         // 아이템의 제목과 내용 설정
         holder.itemTitle.setText(item.getTitle());
@@ -74,7 +74,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         // 아이템 클릭 이벤트 -> 상세 페이지로 이동
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ItemDetailActivity.class);
+            Intent intent = new Intent(context, home_ItemDetailActivity.class);
             intent.putExtra("item_id", item.getId());
             intent.putExtra("item_title", item.getTitle() != null ? item.getTitle() : "No Title");
             intent.putExtra("item_content", item.getContent() != null ? item.getContent() : "No Content");
@@ -90,7 +90,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList != null ? itemList.size() : 0;
     }
 
-    public void updateItems(List<Item> newItems) {
+    public void updateItems(List<home_Item> newItems) {
         this.itemList = newItems;
         notifyDataSetChanged();
     }
